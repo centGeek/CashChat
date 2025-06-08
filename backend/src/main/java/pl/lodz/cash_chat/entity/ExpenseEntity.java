@@ -2,11 +2,17 @@ package pl.lodz.cash_chat.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "expense")
+@Getter
+@Setter
 public class ExpenseEntity {
 
     @Id
@@ -18,14 +24,25 @@ public class ExpenseEntity {
     private String description;
 
     @Column(name = "value")
-    private String value;
+    private BigDecimal value;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_of_division")
     private TypeOfDivision typeOfDivision;
 
-    @Column(name = "group_id")
-    private Integer groupId;
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    private GroupEntity groupEntity;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserEntity userEntity;
+
+    public ExpenseEntity(String description, BigDecimal value, TypeOfDivision typeOfDivision, GroupEntity groupEntity, UserEntity userEntity) {
+        this.description = description;
+        this.value = value;
+        this.typeOfDivision = typeOfDivision;
+        this.groupEntity = groupEntity;
+        this.userEntity = userEntity;
+    }
 }

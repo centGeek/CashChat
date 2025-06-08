@@ -7,39 +7,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.lodz.cash_chat.entity.RoleEntity;
 import pl.lodz.cash_chat.entity.UserEntity;
-import pl.lodz.cash_chat.repository.RoleRepository;
-import pl.lodz.cash_chat.repository.UserRepository;
+import pl.lodz.cash_chat.repository.jpa.RoleJpaRepository;
+import pl.lodz.cash_chat.repository.jpa.UserJpaRepository;
 
 @Component
 @RequiredArgsConstructor
 public class UserInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
 
-    private final RoleRepository roleRepository;
+    private final RoleJpaRepository roleJpaRepository;
 
     private final PasswordEncoder passwordEncoder;
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        if (userRepository.count() == 0) {
+        if (userJpaRepository.count() == 0) {
             RoleEntity role = new RoleEntity( "USER");
-            roleRepository.save(role);
+            roleJpaRepository.save(role);
             UserEntity student1 = new UserEntity(
                     null, "Jan", "Kowalski", "student1",
-                    "123456789", "student1@example.com",
+                    "123456789", "student1@cashchat.com",
                     passwordEncoder.encode("pass123"),
                     role
             );
 
             UserEntity student2 = new UserEntity(
                     null, "Ola", "Nowak", "student2",
-                    "987654321", "student2@example.com",
+                    "987654321", "student2@cashchat.com",
                     passwordEncoder.encode("pass456"),
                     role
             );
 
-            userRepository.save(student1);
-            userRepository.save(student2);
+            userJpaRepository.save(student1);
+            userJpaRepository.save(student2);
         }
     }
 }

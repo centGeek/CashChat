@@ -17,6 +17,7 @@ public class GroupUsersEntity {
     @Column(name = "group_id")
     private Integer groupId;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserEntity userEntity;
 }

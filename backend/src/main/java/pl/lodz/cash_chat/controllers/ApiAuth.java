@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.lodz.cash_chat.config.JwtService;
 import pl.lodz.cash_chat.entity.UserEntity;
-import pl.lodz.cash_chat.repository.UserRepository;
+import pl.lodz.cash_chat.repository.jpa.UserJpaRepository;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,12 +29,12 @@ public class ApiAuth {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
 
-    public ApiAuth(AuthenticationManager authenticationManager, JwtService jwtService, UserRepository userRepository) {
+    public ApiAuth(AuthenticationManager authenticationManager, JwtService jwtService, UserJpaRepository userJpaRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
+        this.userJpaRepository = userJpaRepository;
     }
 
     @PostMapping("/login")
@@ -44,7 +44,7 @@ public class ApiAuth {
         );
 
         User user = (User) authentication.getPrincipal();
-        Optional<UserEntity> byEmail = userRepository.findByEmail(user.getUsername());
+        Optional<UserEntity> byEmail = userJpaRepository.findByEmail(user.getUsername());
         String token = jwtService.generateToken(byEmail.get().getId(), user.getUsername(), user.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)

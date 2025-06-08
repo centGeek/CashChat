@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +23,11 @@ public class GroupEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "amount")
-    private BigDecimal amount;
+    @OneToMany()
+    private List<ExpenseEntity> expenseEntities;
 
+    public GroupEntity(String description, String name) {
+        this.description = description;
+        this.name = name;
+    }
 }

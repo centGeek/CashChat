@@ -1,5 +1,6 @@
 package pl.lodz.cash_chat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,10 +35,20 @@ public class UserEntity {
     private String email;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
+    public UserEntity(String name, String surname, String nickname, String phoneNumber, String email, String password, RoleEntity role) {
+        this.name = name;
+        this.surname = surname;
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 }

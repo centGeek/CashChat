@@ -1,19 +1,41 @@
 package pl.lodz.cash_chat.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import pl.lodz.cash_chat.entity.UserEntity;
+import pl.lodz.cash_chat.repository.jpa.UserJpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+@AllArgsConstructor
+public class UserRepository {
 
-    @Query("""
-            select usr from user_entity usr where usr.email =:email
-             """)
-    Optional<UserEntity> findByEmail(@Param("email") String email);
+    private UserJpaRepository userJpaRepository;
 
+    public List<UserEntity> getAllExceptLoggedUser() {
+//        Long loggedUserId = getCurrentUserId();
+        List<UserEntity> users = userJpaRepository.findAll();
+
+//        users.removeIf(user -> user.getId().equals(loggedUserId));
+
+        return users;
+    }
+
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("User not authenticated");
+        }
+
+        Object principal = authentication.getPrincipal();
+        System.out.println(principal.toString());
+        if (principal instanceof UserEntity user) {
+            return user.getId();
+        }
+
+        throw new IllegalStateException("Unsupported principal type: " + principal.getClass());
+    }
 }

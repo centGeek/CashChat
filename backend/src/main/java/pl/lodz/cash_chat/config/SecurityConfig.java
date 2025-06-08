@@ -58,6 +58,7 @@ public class SecurityConfig {
     SecurityFilterChain securityEnabled(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtService), org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

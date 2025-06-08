@@ -19,11 +19,6 @@ public class RoleEntity {
     @Column(name = "role_name")
     private String roleName;
 
-    public RoleEntity(Long id, String roleName) {
-        this.id = id;
-        this.roleName = roleName;
-    }
-
     public RoleEntity(String roleName) {
         this.roleName = roleName;
     }
