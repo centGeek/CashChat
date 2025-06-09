@@ -38,8 +38,16 @@ public class UserInitializer implements ApplicationListener<ApplicationReadyEven
                     role
             );
 
+            UserEntity student3 = new UserEntity(
+                    null, "Izabela", "Kot", "student3",
+                    "997997997", "student3@cashchat.com",
+                    passwordEncoder.encode("pass789"),
+                    role
+            );
+
             userJpaRepository.save(student1);
             userJpaRepository.save(student2);
+            userJpaRepository.save(student3);
         }
     }
 }

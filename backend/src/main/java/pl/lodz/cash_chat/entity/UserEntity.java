@@ -1,6 +1,5 @@
 package pl.lodz.cash_chat.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +34,6 @@ public class UserEntity {
     private String email;
 
     @Column(name = "password")
-    @JsonIgnore
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)

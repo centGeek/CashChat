@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.lodz.cash_chat.entity.RoleEntity;
 import pl.lodz.cash_chat.entity.UserEntity;
-import pl.lodz.cash_chat.repository.jpa.UserJpaRepository;
-
+import pl.lodz.cash_chat.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +18,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserSecurityConfig implements UserDetailsService {
 
-    private final UserJpaRepository userJpaRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> user = userJpaRepository.findByEmail(email);
+        Optional<UserEntity> user = userRepository.findByEmail(email);
 
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User with email " + email + " not found");

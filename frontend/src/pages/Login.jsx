@@ -13,7 +13,7 @@ function LoginPage() {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
+  
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -23,9 +23,13 @@ function LoginPage() {
         credentials: 'include',
         body: JSON.stringify({ email, password })
       });
-
+  
       if (response.ok) {
-        navigate('/dashboard');  // <-- przekierowanie po sukcesie
+        const data = await response.json();
+  
+        localStorage.setItem('token', data.token);
+  
+        navigate('/dashboard'); 
       } else {
         setError('Niepoprawne dane logowania');
       }
@@ -39,17 +43,14 @@ function LoginPage() {
 
   return (
     <div className="login-page">
-      {/* Animated background elements */}
       <div className="background-circles">
         <div className="circle1"></div>
         <div className="circle2"></div>
         <div className="circle3"></div>
       </div>
 
-      {/* Glassmorphism card */}
       <div className="card-wrapper">
         <div className="card">
-          {/* Header */}
           <div className="header">
             <div className="logo-circle">
               <svg className="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -60,9 +61,7 @@ function LoginPage() {
             <p className="subtitle">Zaloguj się do swojego konta</p>
           </div>
 
-          {/* Login Form */}
           <form className="form" onSubmit={handleLogin}>
-            {/* Email Input */}
             <div className="form-group">
               <label htmlFor="email">Adres email</label>
               <div className="input-wrapper">
@@ -80,7 +79,6 @@ function LoginPage() {
               </div>
             </div>
 
-            {/* Password Input */}
             <div className="form-group">
               <label htmlFor="password">Hasło</label>
               <div className="input-wrapper">
@@ -98,14 +96,12 @@ function LoginPage() {
               </div>
             </div>
 
-            {/* Error Message */}
             {error && (
               <div className="error-message">
                 <p>{error}</p>
               </div>
             )}
 
-            {/* Submit Button */}
             <button type="submit" disabled={isLoading} className="login-btn">
               {isLoading ? (
                 <>
@@ -121,7 +117,6 @@ function LoginPage() {
             </button>
           </form>
 
-          {/* Footer Links */}
           <div className="footer-links">
             <button type="button">Zapomniałeś hasła?</button>
             <div className="footer-register">

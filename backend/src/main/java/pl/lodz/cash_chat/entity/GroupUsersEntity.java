@@ -14,10 +14,16 @@ public class GroupUsersEntity {
     @Column(name = "group_users_id")
     private Long id;
 
-    @Column(name = "group_id")
-    private Integer groupId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    private GroupEntity groupEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEntity userEntity;
+
+    public GroupUsersEntity(GroupEntity groupEntity, UserEntity userEntity) {
+        this.groupEntity = groupEntity;
+        this.userEntity = userEntity;
+    }
 }

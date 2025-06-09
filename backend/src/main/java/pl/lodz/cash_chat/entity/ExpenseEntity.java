@@ -30,11 +30,11 @@ public class ExpenseEntity {
     @Column(name = "type_of_division")
     private TypeOfDivision typeOfDivision;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")
     private GroupEntity groupEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEntity userEntity;
 
